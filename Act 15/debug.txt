@@ -1,0 +1,21 @@
+stdClass Object
+(
+    [message] => Registro obtenido correctamente
+    [code] => 2
+    [data] => stdClass Object
+        (
+            [id] => 107
+            [name] => Jose Ramon
+            [lastname] => Flores Sanchez
+            [avatar] => https://crud.jonathansoto.mx/storage/users/avatars/1_1729014133.jpeg
+            [email] => joseramonf_21@alu.uabcs.mx
+            [phone_number] => 
+            [created_by] => Jonathan Soto
+            [role] => Administrador
+            [created_at] => 2024-10-15T17:52:03.000000Z
+            [updated_at] => 2024-10-15T17:52:03.000000Z
+            [token] => 1106|9wm8SvoTZoYJUXJUvRGKm25Y3BLN9K9nAGaOznH4
+        )
+
+    [errors] => 
+)
