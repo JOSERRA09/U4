@@ -1,11 +1,13 @@
-<?php
+<?php  
 include_once "app/ProductController.php";
-$productController = new ProducController(); 
+
+$productController = new ProducController();
 
 if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != null) {
     $products = $productController->get();
 } else {
     header('Location: index.php');
+    exit(); 
 }
 ?>
 <!DOCTYPE html>
@@ -112,6 +114,13 @@ if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != null) {
 
             <div class="container my-4">
                 <h2 class="mb-4 text-center">Productos Disponibles</h2>
+
+                <div class="d-flex justify-content-start mb-3"> <!-- Alineación a la izquierda -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createProductModal">
+                        Crear Producto
+                    </button>
+                </div>
+
                 <div class="row">
                     <?php if (isset($products) && count($products)): ?>
                         <?php foreach ($products as $product): ?>
@@ -133,6 +142,38 @@ if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != null) {
                             </div>
                         </div>
                     <?php endif ?>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="createProductModal" tabindex="-1" aria-labelledby="createProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createProductModalLabel">Añadir Producto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="CrearProducto.php" method="POST">
+                        <div class="mb-3">
+                            <label for="productName" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="productName" name="productName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="productPrice" class="form-label">Precio</label>
+                            <input type="number" class="form-control" id="productPrice" name="productPrice" step="0.01" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="productDescription" class="form-label">Descripción</label>
+                            <textarea class="form-control" id="productDescription" name="productDescription" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="productFeatures" class="form-label">Características</label>
+                            <textarea class="form-control" id="productFeatures" name="productFeatures" rows="3" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Crear Producto</button>
+                    </form>
                 </div>
             </div>
         </div>
