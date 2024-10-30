@@ -1,25 +1,27 @@
-<?php  
-include_once "app/ProductController.php";
-
-$productController = new ProducController();
+<?php
+include 'app/ProductController.php';
+$ProductController = new ProducController(); 
 
 if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != null) {
-    $products = $productController->get();
+    $products = $ProductController->products();
 } else {
     header('Location: index.php');
     exit(); 
 }
 ?>
+
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Tienda Online</title>
+    <title>Home</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         body {
             background-color: #000000;
+            color: #ffffff; 
         }
         .navbar {
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -42,137 +44,132 @@ if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != null) {
         .sidebar .nav-link.active {
             background-color: #495057;
         }
+        .edit-btn {
+            background-color: yellow;
+            border: none;
+        }
     </style>
 </head>
 <body>
-    <div class="d-flex">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark flex-column" style="width: 250px;">
-            <a class="navbar-brand" href="#">Tienda Virtual</a>
-            <hr class="bg-light">
-            <ul class="nav nav-pills flex-column mb-auto">
-                <li class="nav-item">
-                    <a href="#" class="nav-link active">Inicio</a>
-                </li>
-                <li>
-                    <a href="#" class="nav-link">Panel de Control</a>
-                </li>
-                <li>
-                    <a href="#" class="nav-link">Mis Pedidos</a>
-                </li>
-                <li>
-                    <a href="#" class="nav-link">Productos</a>
-                </li>
-                <li>
-                    <a href="#" class="nav-link">Clientes</a>
-                </li>
-            </ul>
-            <hr class="bg-light">
-            <div class="dropdown">
-                <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                    <strong>Mi Cuenta</strong>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                    <li><a class="dropdown-item" href="#">Nuevo Proyecto</a></li>
-                    <li><a class="dropdown-item" href="#">Configuraciones</a></li>
-                    <li><a class="dropdown-item" href="#">Perfil</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Cerrar Sesión</a></li>
-                </ul>
-            </div>
-        </nav>
-
-        <div class="flex-grow-1">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <a class="navbar-brand" href="#">Tienda Online</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Inicio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Características</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Precios</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link disabled" aria-disabled="true">Deshabilitado</a>
-                        </li>
-                    </ul>
+    <div class=""> 
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-2 p-0 m-0 d-none d-md-block">
+                    <div class="d-flex flex-column min-vh-100 flex-shrink-0 p-3 text-white bg-dark">
+                        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                            <span class="fs-4">Tienda Virtual</span>
+                        </a>
+                        <hr>
+                        <ul class="nav nav-pills flex-column mb-auto">
+                            <li class="nav-item">
+                                <a href="#" class="nav-link active" aria-current="page">Inicio</a>
+                                <a href="#" class="nav-link text-white">Panel de control</a>
+                                <a href="#" class="nav-link text-white">Pedidos</a>
+                                <a href="#" class="nav-link text-white">Productos</a>
+                                <a href="#" class="nav-link text-white">Clientes</a>
+                            </li>
+                        </ul>
+                        <hr>
+                        <div class="dropdown">
+                            <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <strong>Admin</strong>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                                <li><a class="dropdown-item" href="#">New project...</a></li>
+                                <li><a class="dropdown-item" href="#">Settings</a></li>
+                                <li><a class="dropdown-item" href="#">Profile</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#">Sign out</a></li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" name="search" placeholder="Buscar productos" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Buscar</button>
-                </form>
-            </nav>
-
-            <div class="container my-4">
-                <h2 class="mb-4 text-center">Productos Disponibles</h2>
-
-                <div class="d-flex justify-content-start mb-3"> <!-- Alineación a la izquierda -->
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createProductModal">
-                        Crear Producto
-                    </button>
-                </div>
-
-                <div class="row">
-                    <?php if (isset($products) && count($products)): ?>
-                        <?php foreach ($products as $product): ?>
-                            <div class="col-md-4 mb-4">
-                                <div class="card h-100 shadow">
-                                    <img src="<?= $product->cover ?>" class="card-img-top" alt="<?= $product->name ?>" style="border-radius: 10px 10px 0 0;">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><?= $product->name ?></h5>
-                                        <p class="card-text"><?= $product->description ?></p>
-                                        <a href="details.php?slug=<?= $product->slug ?>" class="btn btn-primary">Detalles</a>
-                                    </div>
-                                </div>
+                <div class="col p-0 m-0">
+                    <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark" data-bs-theme="dark">
+                        <div class="container">
+                            <a class="navbar-brand" href="#">Tienda online</a>
+                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse" id="navbarNav">
+                                <ul class="navbar-nav">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" aria-current="page" href="#">Inicio</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">Características</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">Precio</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link disabled" aria-disabled="true">Deshabilitado</a>
+                                    </li>
+                                </ul>
                             </div>
-                        <?php endforeach ?>
-                    <?php else: ?>
-                        <div class="col-12">
-                            <div class="alert alert-warning" role="alert">
-                                Actualmente no hay productos disponibles.
+                            <form class="d-flex" role="search">
+                                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                                <button class="btn btn-outline-success me-3" type="submit">Search</button>
+                            </form>
+                        </div>
+                    </nav>
+                    <div id="main">
+                        <div class="container p-3"> 
+                            <div class="row"> 
+                                <?php if (!empty($products)): ?>
+                                    <?php foreach ($products as $product): ?>
+                                        <div class="card m-1" style="width: 18rem;">
+                                            <img src="<?= htmlspecialchars($product['cover']) ?>" class="card-img-top" alt="<?= htmlspecialchars($product['name']) ?>">
+                                            <div class="card-body">
+                                                <h5 class="card-title"><?= htmlspecialchars($product['name']) ?></h5>
+                                                <p class="card-text"><?= htmlspecialchars($product['description']) ?></p>
+                                                <a href="details.php?slug=<?= htmlspecialchars($product['slug']) ?>" class="btn btn-primary">Detalles</a>
+                                                <a data-bs-toggle="modal" data-bs-target="#staticBackdrop2" class="btn btn-primary edit-btn" data-slug="<?= htmlspecialchars($product['slug']) ?>">Editar</a>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <p>No hay más productos.</p>
+                                <?php endif; ?>
                             </div>
                         </div>
-                    <?php endif ?>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="createProductModal" tabindex="-1" aria-labelledby="createProductModalLabel" aria-hidden="true">
+   
+    <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="createProductModalLabel">Añadir Producto</h5>
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="CrearProducto.php" method="POST">
+                    <form action="app/ProductController.php" method="POST">
                         <div class="mb-3">
-                            <label for="productName" class="form-label">Nombre</label>
-                            <input type="text" class="form-control" id="productName" name="productName" required>
+                            <label for="edit_name" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="edit_name" name="name" required>
                         </div>
                         <div class="mb-3">
-                            <label for="productPrice" class="form-label">Precio</label>
-                            <input type="number" class="form-control" id="productPrice" name="productPrice" step="0.01" required>
+                            <label for="edit_slug" class="form-label">Slug</label>
+                            <input type="text" class="form-control" id="edit_slug" name="slug" required>
                         </div>
                         <div class="mb-3">
-                            <label for="productDescription" class="form-label">Descripción</label>
-                            <textarea class="form-control" id="productDescription" name="productDescription" rows="3" required></textarea>
+                            <label for="edit_description" class="form-label">Descripción</label>
+                            <input type="text" class="form-control" id="edit_description" name="description" required>
                         </div>
                         <div class="mb-3">
-                            <label for="productFeatures" class="form-label">Características</label>
-                            <textarea class="form-control" id="productFeatures" name="productFeatures" rows="3" required></textarea>
+                            <label for="edit_features" class="form-label">Características</label>
+                            <input type="text" class="form-control" id="edit_features" name="features" required>
                         </div>
-                        <button type="submit" class="btn btn-primary">Crear Producto</button>
+                        <input type="hidden" id="edit_id" name="id" />
+                        <div class="d-grid gap-2 col-6 mx-auto">
+                            <button class="btn btn-primary" type="submit">Guardar</button>
+                        </div>
+                        <input type="hidden" name="action" value="edit_product" />
                     </form>
                 </div>
             </div>
@@ -180,5 +177,21 @@ if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != null) {
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.querySelectorAll(".edit-btn").forEach(button => {
+            button.addEventListener("click", function() {
+                const slug = this.getAttribute("data-slug");
+                fetch(`app/ProductController.php?action=get_product&slug=${slug}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById("edit_name").value = data.name;
+                        document.getElementById("edit_slug").value = data.slug;
+                        document.getElementById("edit_description").value = data.description;
+                        document.getElementById("edit_features").value = data.features;
+                        document.getElementById("edit_id").value = data.id;
+                    });
+            });
+        });
+    </script>
 </body>
 </html>
