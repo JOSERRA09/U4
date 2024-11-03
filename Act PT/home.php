@@ -166,6 +166,17 @@ if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != null) {
                             <label for="edit_features" class="form-label">Características</label>
                             <input type="text" class="form-control" id="edit_features" name="features" required>
                         </div>
+                        <div class="mb-3">
+                        <label for="edit_brand" class="form-label">Marca:</label>
+                        <select class="form-control" name="brand_id" id="edit_brand" required>
+                            <?php
+                            $brands = $ProductController->get_Brands();
+                            foreach ($brands as $brand) {
+                                echo "<option value=\"{$brand['id']}\">{$brand['name']}</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
                         <input type="hidden" id="edit_id" name="id" />
                         <div class="d-grid gap-2 col-6 mx-auto">
                             <button class="btn btn-primary" type="submit">Guardar</button>
